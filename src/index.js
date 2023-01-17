@@ -42,7 +42,8 @@ const structure = (() => {
   screen.appendChild(content);
   content.classList.add("content");
 
-  addTask.onclick = () => {
+  addTask.onclick = (event) => {
+    event.preventDefault();
     appearScreen();
   };
 })();
@@ -88,4 +89,24 @@ function appearScreen() {
   const cancel = document.createElement("button");
   cancel.textContent = "cancel";
   div.appendChild(cancel);
+
+  post.onclick = (event) => {
+    event.preventDefault();
+    const data = dataFactory(title.value, description.value, date.value);
+    storeData(data);
+  };
+
+  cancel.onclick = (event) => {
+    event.preventDefault();
+  };
+}
+
+//to store data
+function storeData(data) {
+  const array = JSON.parse(localStorage.getItem("storage"));
+  console.log(array);
+  array.push(data);
+  console.log(array);
+  localStorage.setItem("storage", JSON.stringify(array));
+  //console.log(localStorage.getItem("storage"));
 }
