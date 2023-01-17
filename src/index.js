@@ -46,8 +46,8 @@ const structure = (name = "tasks") => {
   screen.appendChild(content);
   content.classList.add("content");
 
-  displayData(content, null);
-  displayDataProjects(projects, null);
+  displayData(content);
+  displayDataProjects(projects);
 
   addProject.onclick = (event) => {
     event.preventDefault();
@@ -85,6 +85,11 @@ function appearScreenProjects(content) {
     const data = projectFactory(title.value);
     storeDataProjects(data);
     displayDataProjects(content, data);
+  };
+
+  cancel.onclick = (event) => {
+    event.preventDefault();
+    removeItem(document.body, div);
   };
 }
 
@@ -151,6 +156,7 @@ function appearScreen(content) {
 
   cancel.onclick = (event) => {
     event.preventDefault();
+    removeItem(document.body, div);
   };
 }
 
@@ -169,7 +175,7 @@ function storeDataProjects(data) {
 }
 
 //display data
-function displayData(content, item) {
+function displayData(content) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage")).forEach((object) => {
     const div = document.createElement("div");
@@ -186,9 +192,24 @@ function displayData(content, item) {
 
     radio.onclick = () => {
       removeItem(content, div);
-      const toremove = JSON.parse(localStorage.getItem("storage"));
-      toremove.splice(toremove.indexOf(item), 1);
-      localStorage.setItem("storage", JSON.stringify(toremove));
+      const toRemove = [];
+      const final = [];
+      const toProcess = JSON.parse(localStorage.getItem("storage"));
+      toProcess.forEach((event) => {
+        toRemove.push(JSON.stringify(event));
+      });
+      let lol = "";
+      toRemove.forEach((event) => {
+        if (event.includes(title.textContent)) {
+          lol = event;
+        }
+      });
+
+      toRemove.splice(lol, 1);
+      toRemove.forEach((event) => {
+        final.push(JSON.parse(event));
+      });
+      localStorage.setItem("storage", JSON.stringify(final));
     };
   });
 }
@@ -199,7 +220,7 @@ function removeItem(parent, child) {
 }
 
 //display projects
-function displayDataProjects(content, item) {
+function displayDataProjects(content) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage2")).forEach((object) => {
     const div = document.createElement("div");
@@ -216,10 +237,26 @@ function displayDataProjects(content, item) {
 
     x.onclick = () => {
       removeItem(content, div);
-      const toremove = JSON.parse(localStorage.getItem("storage2"));
-      toremove.splice(toremove.indexOf(item), 1);
-      localStorage.setItem("storage2", JSON.stringify(toremove));
+      const toRemove = [];
+      const final = [];
+      const toProcess = JSON.parse(localStorage.getItem("storage2"));
+      toProcess.forEach((event) => {
+        toRemove.push(JSON.stringify(event));
+      });
+      let lol = "";
+      toRemove.forEach((event) => {
+        if (event.includes(title.textContent)) {
+          lol = event;
+        }
+      });
+
+      toRemove.splice(lol, 1);
+      toRemove.forEach((event) => {
+        final.push(JSON.parse(event));
+      });
+      localStorage.setItem("storage2", JSON.stringify(final));
     };
+
     title.onclick = (event) => {
       event.preventDefault();
       document.body.innerHTML = "";
@@ -229,3 +266,5 @@ function displayDataProjects(content, item) {
 }
 
 //to add projects
+
+//todo:  fix bug in local storage
