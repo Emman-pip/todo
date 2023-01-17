@@ -42,7 +42,9 @@ const structure = (() => {
   screen.appendChild(content);
   content.classList.add("content");
 
-  addTask.onclick = () => {};
+  addTask.onclick = () => {
+    appearScreen();
+  };
 })();
 
 //data factory
@@ -56,5 +58,34 @@ const array = (() => {
   if (localStorage.getItem("storage") == undefined) {
     localStorage.setItem("storage", JSON.stringify(emptyArray));
   }
-  const array = JSON.parse(localStorage.getItem("storage"));
 })();
+
+//appearing screen
+function appearScreen() {
+  const div = document.createElement("div");
+  div.classList.add("appear");
+  document.body.appendChild(div);
+
+  const title = document.createElement("input");
+  title.placeholder = "title";
+  title.style.width = "100%";
+  div.appendChild(title);
+
+  const description = document.createElement("textarea");
+  description.cols = "100vw";
+  description.rows = "10";
+  description.placeholder = "description";
+  div.appendChild(description);
+
+  const date = document.createElement("input");
+  date.type = "date";
+  div.appendChild(date);
+
+  const post = document.createElement("button");
+  post.textContent = "post";
+  div.appendChild(post);
+
+  const cancel = document.createElement("button");
+  cancel.textContent = "cancel";
+  div.appendChild(cancel);
+}
