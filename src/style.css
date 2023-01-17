@@ -22,10 +22,11 @@ body {
   background-color: var(--color-grayish);
   height: 100vh;
   overflow: hidden;
+  padding: 1rem;
 }
 
 .addProject {
-  height: 100vh;
+  height: 2rem;
 }
 
 .main {
