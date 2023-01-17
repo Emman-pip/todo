@@ -84,11 +84,7 @@ const structure = (name) => {
 
   array3(name);
 
-  if (name == "General Tasks") {
-    displayData(content);
-  } else {
-    displayDataofProjects(content, name);
-  }
+  ifELse(name, content);
 
   displayDataProjects(projects, name);
 
@@ -109,6 +105,14 @@ const structure = (name) => {
 };
 
 structure("General Tasks");
+
+function ifELse(name, content) {
+  if (name == "General Tasks") {
+    displayData(content);
+  } else {
+    displayDataofProjects(content, name);
+  }
+}
 
 //appear screen for projects
 function appearScreenProjects(content, content2) {
