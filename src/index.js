@@ -62,7 +62,7 @@ const array = (() => {
 
 //appearing screen
 function appearScreen() {
-  const div = document.createElement("div");
+  const div = document.createElement("form");
   div.classList.add("appear");
   document.body.appendChild(div);
 
