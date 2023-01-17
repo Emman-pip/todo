@@ -239,45 +239,14 @@ function storeDataProjects(data) {
 
 //display data
 function displayData(content) {
-  content.innerHTML = "";
-  JSON.parse(localStorage.getItem("storage")).forEach((object) => {
-    const div = document.createElement("div");
-    div.classList.add("strip");
-    content.appendChild(div);
-
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    div.appendChild(radio);
-
-    const title = document.createElement("p");
-    title.textContent = object.title;
-    div.appendChild(title);
-
-    radio.onclick = () => {
-      removeItem(content, div);
-      const toRemove = [];
-      const final = [];
-      const toProcess = JSON.parse(localStorage.getItem("storage"));
-      toProcess.forEach((event) => {
-        toRemove.push(JSON.stringify(event));
-      });
-      let lol = "";
-      toRemove.forEach((event) => {
-        if (event.includes(title.textContent)) {
-          lol = event;
-        }
-      });
-
-      toRemove.splice(lol, 1);
-      toRemove.forEach((event) => {
-        final.push(JSON.parse(event));
-      });
-      localStorage.setItem("storage", JSON.stringify(final));
-    };
-  });
+  displayStuff(content, "storage");
 }
 //display data of projects
 function displayDataofProjects(content, name) {
+  displayStuff(content, name);
+}
+
+function displayStuff(content, name) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem(name)).forEach((object) => {
     const div = document.createElement("div");
@@ -322,6 +291,7 @@ function displayDataofProjects(content, name) {
     };
   });
 }
+
 //to remove child
 function removeItem(parent, child) {
   parent.removeChild(child);
