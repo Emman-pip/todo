@@ -1,7 +1,36 @@
 import _ from "lodash";
 import "./style.css";
 
-const structure = (name = "tasks") => {
+//array function
+const array = (() => {
+  const emptyArray = [];
+  if (localStorage.getItem("storage") == undefined) {
+    localStorage.setItem("storage", JSON.stringify(emptyArray));
+  }
+})();
+
+const array2 = (() => {
+  const emptyArray = [];
+  if (localStorage.getItem("storage2") == undefined) {
+    localStorage.setItem("storage2", JSON.stringify(emptyArray));
+  }
+})();
+
+function storeDataToProjects(data, name) {
+  array3(name);
+  const array = JSON.parse(localStorage.getItem(`${name}`));
+  array.push(data);
+  localStorage.setItem(`${name}`, JSON.stringify(array));
+}
+
+const array3 = (name) => {
+  const emptyArray = [];
+  if (localStorage.getItem(name) == undefined) {
+    localStorage.setItem(name, JSON.stringify(emptyArray));
+  }
+};
+
+const structure = (name) => {
   const topBar = document.createElement("div");
   document.body.appendChild(topBar);
   topBar.textContent = "TodoList.io";
@@ -14,6 +43,11 @@ const structure = (name = "tasks") => {
   const sidebar = document.createElement("div");
   sidebar.classList.add("sidebar");
   main.appendChild(sidebar);
+
+  const all = document.createElement("button");
+  all.textContent = "General Tasks";
+  all.classList.add("addProject");
+  sidebar.appendChild(all);
 
   const addProject = document.createElement("button");
   addProject.textContent = "add project";
@@ -46,29 +80,42 @@ const structure = (name = "tasks") => {
   screen.appendChild(content);
   content.classList.add("content");
 
-  displayData(content);
-  displayDataProjects(projects);
+  array3(name);
+
+  if (name == "General Tasks") {
+    displayData(content);
+  } else {
+    displayDataofProjects(content, name);
+  }
+
+  displayDataProjects(projects, name);
 
   addProject.onclick = (event) => {
     event.preventDefault();
-    appearScreenProjects(projects);
+    appearScreenProjects(projects, content);
   };
 
   addTask.onclick = (event) => {
     event.preventDefault();
-    appearScreen(content);
+    appearScreen(content, name);
+  };
+  all.onclick = (event) => {
+    document.body.innerHTML = "";
+    event.preventDefault();
+    structure("General Tasks");
   };
 };
-structure();
+
+structure("General Tasks");
 
 //appear screen for projects
-function appearScreenProjects(content) {
+function appearScreenProjects(content, content2) {
   const div = document.createElement("form");
-  div.classList.add("appear");
+  div.classList.add("appProject");
   document.body.appendChild(div);
 
   const title = document.createElement("input");
-  title.placeholder = "title";
+  title.placeholder = "Projext title";
   title.style.width = "100%";
   div.appendChild(title);
 
@@ -84,7 +131,8 @@ function appearScreenProjects(content) {
     event.preventDefault();
     const data = projectFactory(title.value);
     storeDataProjects(data);
-    displayDataProjects(content, data);
+    displayDataProjects(content, content2);
+    removeItem(document.body, div);
   };
 
   cancel.onclick = (event) => {
@@ -103,23 +151,8 @@ const projectFactory = (name) => {
   return { name };
 };
 
-//array function
-const array = (() => {
-  const emptyArray = [];
-  if (localStorage.getItem("storage") == undefined) {
-    localStorage.setItem("storage", JSON.stringify(emptyArray));
-  }
-})();
-
-const array2 = (() => {
-  const emptyArray = [];
-  if (localStorage.getItem("storage2") == undefined) {
-    localStorage.setItem("storage2", JSON.stringify(emptyArray));
-  }
-})();
-
 //appearing screen
-function appearScreen(content) {
+function appearScreen(content, name) {
   const div = document.createElement("form");
   div.classList.add("appear");
   document.body.appendChild(div);
@@ -148,10 +181,16 @@ function appearScreen(content) {
   div.appendChild(cancel);
 
   post.onclick = (event) => {
+    removeItem(document.body, div);
     event.preventDefault();
     const data = dataFactory(title.value, description.value, date.value);
-    storeData(data);
-    displayData(content, data);
+    if (name === "General Tasks") {
+      storeData(data);
+      displayData(content);
+    } else {
+      storeDataToProjects(data, name);
+      displayDataofProjects(content, name);
+    }
   };
 
   cancel.onclick = (event) => {
@@ -159,6 +198,8 @@ function appearScreen(content) {
     removeItem(document.body, div);
   };
 }
+
+// to store data from projects
 
 //to store data for tasks
 function storeData(data) {
@@ -213,14 +254,59 @@ function displayData(content) {
     };
   });
 }
+//display data of projects
+function displayDataofProjects(content, name) {
+  content.innerHTML = "";
+  JSON.parse(localStorage.getItem(name)).forEach((object) => {
+    const div = document.createElement("div");
+    div.classList.add("line");
+    content.appendChild(div);
 
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    div.appendChild(radio);
+
+    const title = document.createElement("p");
+    title.textContent = object.title;
+    div.appendChild(title);
+
+    title.onclick = (event) => {
+      document.body.innerHTML = "";
+      event.preventDefault();
+      structure(object.name);
+      appearScreenProjects(document.body, name, object.title);
+    };
+
+    radio.onclick = () => {
+      removeItem(content, div);
+      const toRemove = [];
+      const final = [];
+      const toProcess = JSON.parse(localStorage.getItem(name));
+      toProcess.forEach((event) => {
+        toRemove.push(JSON.stringify(event));
+      });
+      let lol = "";
+      toRemove.forEach((event) => {
+        if (event.includes(title.textContent)) {
+          lol = event;
+        }
+      });
+
+      toRemove.splice(lol, 1);
+      toRemove.forEach((event) => {
+        final.push(JSON.parse(event));
+      });
+      localStorage.setItem(name, JSON.stringify(final));
+    };
+  });
+}
 //to remove child
 function removeItem(parent, child) {
   parent.removeChild(child);
 }
 
 //display projects
-function displayDataProjects(content) {
+function displayDataProjects(content, name) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage2")).forEach((object) => {
     const div = document.createElement("div");
@@ -229,13 +315,17 @@ function displayDataProjects(content) {
 
     const title = document.createElement("button");
     title.innerHTML = object.name;
+    title.style.width = "90%";
     div.appendChild(title);
 
-    const x = document.createElement("p");
-    x.textContent = "x";
+    const x = document.createElement("button");
+    x.textContent = "X";
+    x.classList.add("x");
+    x.style.width = "10%";
     div.appendChild(x);
 
     x.onclick = () => {
+      localStorage.removeItem(name);
       removeItem(content, div);
       const toRemove = [];
       const final = [];
@@ -255,16 +345,17 @@ function displayDataProjects(content) {
         final.push(JSON.parse(event));
       });
       localStorage.setItem("storage2", JSON.stringify(final));
+      document.body.innerHTML = "";
+      structure("General Tasks");
     };
 
     title.onclick = (event) => {
-      event.preventDefault();
       document.body.innerHTML = "";
+      event.preventDefault();
       structure(object.name);
+      displayDataofProjects(content, name);
     };
   });
 }
 
-//to add projects
-
-//todo:  fix bug in local storage
+//to do: fix the X button(it must clear the whole storage for that shit)
