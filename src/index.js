@@ -44,7 +44,7 @@ const structure = (() => {
 
   addTask.onclick = (event) => {
     event.preventDefault();
-    appearScreen();
+    appearScreen(content);
   };
 })();
 
@@ -62,7 +62,7 @@ const array = (() => {
 })();
 
 //appearing screen
-function appearScreen() {
+function appearScreen(content) {
   const div = document.createElement("form");
   div.classList.add("appear");
   document.body.appendChild(div);
@@ -94,6 +94,7 @@ function appearScreen() {
     event.preventDefault();
     const data = dataFactory(title.value, description.value, date.value);
     storeData(data);
+    displayData(content);
   };
 
   cancel.onclick = (event) => {
@@ -104,9 +105,25 @@ function appearScreen() {
 //to store data
 function storeData(data) {
   const array = JSON.parse(localStorage.getItem("storage"));
-  console.log(array);
   array.push(data);
-  console.log(array);
   localStorage.setItem("storage", JSON.stringify(array));
   //console.log(localStorage.getItem("storage"));
+}
+
+//display data
+function displayData(content) {
+  content.innerHTML = "";
+  JSON.parse(localStorage.getItem("storage")).forEach((object) => {
+    const div = document.createElement("div");
+    div.classList.add("line");
+    content.appendChild(div);
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    div.appendChild(radio);
+
+    const title = document.createElement("p");
+    title.textContent = object.title;
+    div.appendChild(title);
+  });
 }

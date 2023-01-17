@@ -87,3 +87,15 @@ body {
   animation-name: slidedown;
   animation-duration: 1s;
 }
+
+.line {
+  background-color: var(--color-grayish);
+  border-radius: 10px;
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  animation-name: pop;
+  animation-duration: 1s;
+}
