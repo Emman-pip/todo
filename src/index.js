@@ -1,6 +1,7 @@
 import _ from "lodash";
 import "./style.css";
 
+//git subtree push --prefix dist origin gh-pages
 //array function
 const array = (() => {
   const emptyArray = [];
@@ -33,6 +34,7 @@ const array3 = (name) => {
 const structure = (name) => {
   const topBar = document.createElement("div");
   document.body.appendChild(topBar);
+
   topBar.textContent = "TodoList.io";
   topBar.classList.add("topBar");
 
@@ -115,7 +117,7 @@ function appearScreenProjects(content, content2) {
   document.body.appendChild(div);
 
   const title = document.createElement("input");
-  title.placeholder = "Projext title";
+  title.placeholder = "Project title";
   title.style.width = "100%";
   div.appendChild(title);
 
@@ -220,7 +222,7 @@ function displayData(content) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage")).forEach((object) => {
     const div = document.createElement("div");
-    div.classList.add("line");
+    div.classList.add("strip");
     content.appendChild(div);
 
     const radio = document.createElement("input");
@@ -311,16 +313,19 @@ function displayDataProjects(content, name) {
   JSON.parse(localStorage.getItem("storage2")).forEach((object) => {
     const div = document.createElement("div");
     div.classList.add("line");
+    div.classList.add("color");
     content.appendChild(div);
 
     const title = document.createElement("button");
     title.innerHTML = object.name;
     title.style.width = "90%";
+    title.classList.add("change");
     div.appendChild(title);
 
     const x = document.createElement("button");
     x.textContent = "X";
     x.classList.add("x");
+    x.classList.add("change");
     x.style.width = "10%";
     div.appendChild(x);
 
@@ -339,8 +344,7 @@ function displayDataProjects(content, name) {
           lol = event;
         }
       });
-
-      toRemove.splice(lol, 1);
+      toRemove.splice(toRemove.indexOf(lol), 1);
       toRemove.forEach((event) => {
         final.push(JSON.parse(event));
       });
