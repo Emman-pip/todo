@@ -130,17 +130,21 @@ function appearScreenProjects(content, content2) {
   div.appendChild(cancel);
 
   post.onclick = (event) => {
-    event.preventDefault();
-    const data = projectFactory(title.value);
-    storeDataProjects(data);
-    displayDataProjects(content, content2);
-    removeItem(document.body, div);
+    toPostProjects(event, title.value, content, content2, document.body, div);
   };
 
   cancel.onclick = (event) => {
     event.preventDefault();
     removeItem(document.body, div);
   };
+}
+
+function toPostProjects(event, title, content, content2, parent, div) {
+  event.preventDefault();
+  const data = projectFactory(title);
+  storeDataProjects(data);
+  displayDataProjects(content, content2);
+  removeItem(parent, div);
 }
 
 //data factory
@@ -183,16 +187,16 @@ function appearScreen(content, name) {
   div.appendChild(cancel);
 
   post.onclick = (event) => {
-    removeItem(document.body, div);
-    event.preventDefault();
-    const data = dataFactory(title.value, description.value, date.value);
-    if (name === "General Tasks") {
-      storeData(data);
-      displayData(content);
-    } else {
-      storeDataToProjects(data, name);
-      displayDataofProjects(content, name);
-    }
+    toPost(
+      name,
+      content,
+      title.value,
+      div,
+      document.body,
+      event,
+      description.value,
+      date.value
+    );
   };
 
   cancel.onclick = (event) => {
@@ -201,6 +205,18 @@ function appearScreen(content, name) {
   };
 }
 
+function toPost(name, content, title, div, parent, event, description, date) {
+  removeItem(parent, div);
+  event.preventDefault();
+  const data = dataFactory(title, description, date);
+  if (name === "General Tasks") {
+    storeData(data);
+    displayData(content);
+  } else {
+    storeDataToProjects(data, name);
+    displayDataofProjects(content, name);
+  }
+}
 // to store data from projects
 
 //to store data for tasks
