@@ -1,7 +1,7 @@
 import _ from "lodash";
 import "./style.css";
 
-const structure = (() => {
+const structure = (name = "tasks") => {
   const topBar = document.createElement("div");
   document.body.appendChild(topBar);
   topBar.textContent = "TodoList.io";
@@ -37,7 +37,7 @@ const structure = (() => {
 
   topScreen.appendChild(text);
   text.classList.add("contentText");
-  text.textContent = "Tasks";
+  text.textContent = name;
 
   const addTask = document.createElement("button");
   addTask.textContent = "+Add";
@@ -58,7 +58,8 @@ const structure = (() => {
     event.preventDefault();
     appearScreen(content);
   };
-})();
+};
+structure();
 
 //appear screen for projects
 function appearScreenProjects(content) {
@@ -197,7 +198,7 @@ function removeItem(parent, child) {
   parent.removeChild(child);
 }
 
-//display data
+//display projects
 function displayDataProjects(content, item) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage2")).forEach((object) => {
@@ -218,6 +219,11 @@ function displayDataProjects(content, item) {
       const toremove = JSON.parse(localStorage.getItem("storage2"));
       toremove.splice(toremove.indexOf(item), 1);
       localStorage.setItem("storage2", JSON.stringify(toremove));
+    };
+    title.onclick = (event) => {
+      event.preventDefault();
+      document.body.innerHTML = "";
+      structure(object.name);
     };
   });
 }
