@@ -269,27 +269,36 @@ function displayStuff(content, name) {
     };
 
     radio.onclick = () => {
-      removeItem(content, div);
-      const toRemove = [];
-      const final = [];
-      const toProcess = JSON.parse(localStorage.getItem(name));
-      toProcess.forEach((event) => {
-        toRemove.push(JSON.stringify(event));
-      });
-      let lol = "";
-      toRemove.forEach((event) => {
-        if (event.includes(title.textContent)) {
-          lol = event;
-        }
-      });
-
-      toRemove.splice(toRemove.indexOf(lol), 1);
-      toRemove.forEach((event) => {
-        final.push(JSON.parse(event));
-      });
-      localStorage.setItem(name, JSON.stringify(final));
+      radioFunc(content, div, name, title.textContent);
     };
   });
+}
+
+function radioFunc(content, div, name, title) {
+  removeItem(content, div);
+  const toRemove = [];
+  const final = [];
+  const toProcess = JSON.parse(localStorage.getItem(name));
+  toProcess.forEach((event) => {
+    toRemove.push(event);
+  });
+  let lol = "";
+  toRemove.forEach((event) => {
+    console.log(event.title);
+    if (event.title == title) {
+      lol = event;
+    }
+  });
+  console.log(lol);
+  console.log(toRemove.indexOf(lol));
+
+  console.log(toRemove);
+  toRemove.splice(toRemove.indexOf(lol), 1);
+  console.log(toRemove);
+  toRemove.forEach((event) => {
+    final.push(event);
+  });
+  localStorage.setItem(name, JSON.stringify(final));
 }
 
 //to remove child
