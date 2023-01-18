@@ -134,7 +134,11 @@ function appearScreenProjects(content, content2) {
   div.appendChild(cancel);
 
   post.onclick = (event) => {
-    toPostProjects(event, title.value, content, content2, document.body, div);
+    if (!(title.value == "")) {
+      toPostProjects(event, title.value, content, content2, document.body, div);
+    } else {
+      alert("Put an appropriate project title!");
+    }
   };
 
   cancel.onclick = (event) => {
@@ -191,16 +195,20 @@ function appearScreen(content, name) {
   div.appendChild(cancel);
 
   post.onclick = (event) => {
-    toPost(
-      name,
-      content,
-      title.value,
-      div,
-      document.body,
-      event,
-      description.value,
-      date.value
-    );
+    if (!(title.value == "")) {
+      toPost(
+        name,
+        content,
+        title.value,
+        div,
+        document.body,
+        event,
+        description.value,
+        date.value
+      );
+    } else {
+      alert("Put an appropriate title!");
+    }
   };
 
   cancel.onclick = (event) => {
@@ -253,25 +261,64 @@ function displayStuff(content, name) {
     div.classList.add("line");
     content.appendChild(div);
 
+    const div2 = document.createElement("div");
+    div.appendChild(div2);
+    div2.classList.add("line2");
+
     const radio = document.createElement("input");
     radio.type = "radio";
-    div.appendChild(radio);
+    div2.appendChild(radio);
 
     const title = document.createElement("p");
     title.textContent = object.title;
-    div.appendChild(title);
+    div2.appendChild(title);
 
-    title.onclick = (event) => {
-      document.body.innerHTML = "";
+    title.addEventListener("click", (event) => {
       event.preventDefault();
-      structure(object.name);
-      appearScreenProjects(document.body, name, object.title);
-    };
+      if (
+        div.innerHTML ==
+        `<div class="line2"><input type="radio"><p>${object.title}</p></div>`
+      ) {
+        showDesc(div, object);
+      } else {
+        displayStuff(content, name);
+      }
+      // structure(object.name);
+      //appearScreenProjects(document.body, name, object.title);
+    });
 
     radio.onclick = () => {
       radioFunc(content, div, name, title.textContent);
     };
   });
+}
+
+function showDesc(div, name) {
+  if (localStorage.getItem(name.title) == undefined) {
+    localStorage.setItem(name.title, JSON.stringify(name));
+  }
+  const data = document.createElement("div");
+  data.classList.add("descc");
+  div.appendChild(data);
+
+  const desc = document.createElement("textarea");
+  desc.cols = "30";
+  desc.rows = "10";
+  desc.value = JSON.parse(localStorage.getItem(name.title)).description;
+
+  data.appendChild(desc);
+
+  desc.addEventListener("keyup", () => {
+    const de = JSON.parse(localStorage.getItem(name.title));
+    de.description = desc.value;
+    localStorage.setItem(name.title, JSON.stringify(de));
+    desc.value = de.description;
+    //localStorage.setItem(name.title)
+  });
+
+  const date = document.createElement("p");
+  date.textContent = `DUE: ${name.due}`;
+  data.appendChild(date);
 }
 
 function radioFunc(content, div, name, title) {
@@ -284,12 +331,10 @@ function radioFunc(content, div, name, title) {
   });
   let lol = "";
   toRemove.forEach((event) => {
-    console.log(event.title);
     if (event.title == title) {
       lol = event;
     }
   });
-  console.log(toRemove);
   toRemove.splice(toRemove.indexOf(lol), 1);
   toRemove.forEach((event) => {
     final.push(event);
@@ -307,7 +352,6 @@ function displayDataProjects(content, name) {
   content.innerHTML = "";
   JSON.parse(localStorage.getItem("storage2")).forEach((object) => {
     const div = document.createElement("div");
-    div.classList.add("line");
     div.classList.add("color");
     content.appendChild(div);
 
@@ -361,5 +405,3 @@ function xBtn(content, div, title, name) {
   document.body.innerHTML = "";
   structure("General Tasks");
 }
-
-//to do: fix the X button(it must clear the whole storage for that shit)

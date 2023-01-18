@@ -10,6 +10,10 @@
   --color-dark-gray: rgb(78, 78, 78);
 }
 
+.title {
+  cursor: pointer;
+}
+
 .topBar {
   background-color: gray;
   height: 5rem;
@@ -27,7 +31,7 @@ body {
 .sidebar {
   width: 30vw;
   background-color: var(--color-grayish);
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   padding: 1rem;
   display: flex;
@@ -88,6 +92,7 @@ body {
   align-items: center;
   padding: 0.5rem;
   background-color: var(--color-grayish);
+  border-radius: 10px;
 }
 
 @keyframes slidedown {
@@ -114,7 +119,21 @@ body {
 }
 
 .line {
+  border-radius: 10px;
+  width: 100%;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  animation-name: pop;
+  animation-duration: 1s;
+  padding: 1rem;
   background-color: var(--color-grayish);
+  display: flex;
+  flex-direction: column;
+}
+
+.line2 {
   border-radius: 10px;
   width: 100%;
   height: 2rem;
@@ -125,6 +144,14 @@ body {
   animation-duration: 1s;
   padding: 1rem;
   background-color: var(--color-grayish);
+  display: flex;
+  gap: 1rem;
+}
+
+.descc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .strip {
@@ -175,5 +202,8 @@ body {
 }
 
 .color {
-  background-color: var(--color-light-gray);
+  border-radius: 10px;
+  display: flex;
+  background-color: var(--color-dark-gray);
+  padding: 1rem;
 }
