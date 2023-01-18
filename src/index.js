@@ -283,7 +283,7 @@ function displayStuff(content, name) {
         }
       });
 
-      toRemove.splice(lol, 1);
+      toRemove.splice(toRemove.indexOf(lol), 1);
       toRemove.forEach((event) => {
         final.push(JSON.parse(event));
       });
