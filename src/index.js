@@ -269,7 +269,7 @@ function displayStuff(content, name) {
     radio.type = "radio";
     div2.appendChild(radio);
 
-    const title = document.createElement("p");
+    let title = document.createElement("p");
     title.textContent = object.title;
     div2.appendChild(title);
 
@@ -283,7 +283,7 @@ function displayStuff(content, name) {
       } else {
         displayStuff(content, name);
       }
-      // structure(object.name);
+      //structure(object.name);
       //appearScreenProjects(document.body, name, object.title);
     });
 
