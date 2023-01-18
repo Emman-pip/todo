@@ -289,12 +289,8 @@ function radioFunc(content, div, name, title) {
       lol = event;
     }
   });
-  console.log(lol);
-  console.log(toRemove.indexOf(lol));
-
   console.log(toRemove);
   toRemove.splice(toRemove.indexOf(lol), 1);
-  console.log(toRemove);
   toRemove.forEach((event) => {
     final.push(event);
   });
@@ -329,27 +325,7 @@ function displayDataProjects(content, name) {
     div.appendChild(x);
 
     x.onclick = () => {
-      localStorage.removeItem(name);
-      removeItem(content, div);
-      const toRemove = [];
-      const final = [];
-      const toProcess = JSON.parse(localStorage.getItem("storage2"));
-      toProcess.forEach((event) => {
-        toRemove.push(JSON.stringify(event));
-      });
-      let lol = "";
-      toRemove.forEach((event) => {
-        if (event.includes(title.textContent)) {
-          lol = event;
-        }
-      });
-      toRemove.splice(toRemove.indexOf(lol), 1);
-      toRemove.forEach((event) => {
-        final.push(JSON.parse(event));
-      });
-      localStorage.setItem("storage2", JSON.stringify(final));
-      document.body.innerHTML = "";
-      structure("General Tasks");
+      xBtn(content, div, title.textContent, name);
     };
 
     title.onclick = (event) => {
@@ -359,6 +335,31 @@ function displayDataProjects(content, name) {
       displayDataofProjects(content, name);
     };
   });
+}
+
+function xBtn(content, div, title, name) {
+  localStorage.removeItem(name);
+  localStorage.removeItem(name);
+  removeItem(content, div);
+  const toRemove = [];
+  const final = [];
+  const toProcess = JSON.parse(localStorage.getItem("storage2"));
+  toProcess.forEach((event) => {
+    toRemove.push(JSON.stringify(event));
+  });
+  let lol = "";
+  toRemove.forEach((event) => {
+    if (event.includes(title)) {
+      lol = event;
+    }
+  });
+  toRemove.splice(toRemove.indexOf(lol), 1);
+  toRemove.forEach((event) => {
+    final.push(JSON.parse(event));
+  });
+  localStorage.setItem("storage2", JSON.stringify(final));
+  document.body.innerHTML = "";
+  structure("General Tasks");
 }
 
 //to do: fix the X button(it must clear the whole storage for that shit)
